@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 class User
 {
@@ -8,7 +9,6 @@ private:
     std::string login;
     std::string psswrd;
     static std::vector<User> storage;
-
 
 public:
     void registration(std::string login, std::string psswrd)
@@ -66,8 +66,25 @@ int main()
                 }
                 std::cout << "Enter username: ";
                 std::getline(std::cin, login);
+
+                // Validate the username input
+                if (login.empty() || std::all_of(login.begin(), login.end(), [](char c)
+                                                 { return std::isspace(c); }))
+                {
+                    std::cout << "Invalid username, please try again!" << std::endl;
+                    continue;
+                }
+
                 std::cout << "Enter password: ";
                 std::getline(std::cin, psswrd);
+
+                // Validate the password input
+                if (psswrd.empty() || std::all_of(psswrd.begin(), psswrd.end(), [](char c)
+                                                  { return std::isspace(c); }))
+                {
+                    std::cout << "Invalid password, please try again!" << std::endl;
+                    continue;
+                }
                 if (User::verify(login, psswrd))
                 {
                     std::system("clear");
