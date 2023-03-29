@@ -7,15 +7,18 @@ class User
 private:
     std::string login;
     std::string psswrd;
+    static std::vector<User> storage;
+
 
 public:
-    void registration(User *user, std::string login, std::string psswrd)
+    void registration(std::string login, std::string psswrd)
     {
-        user->login = login;
-        user->psswrd = psswrd;
+        this->login = login;
+        this->psswrd = psswrd;
+        storage.push_back(*this);
     }
 
-    bool verify(std::vector<User> storage, std::string login, std::string psswrd)
+    static bool verify(std::string login, std::string psswrd)
     {
         for (int i = 0; i < storage.size(); i++)
         {
@@ -26,13 +29,13 @@ public:
     }
 };
 
+std::vector<User> User::storage; // Definition of static storage
+
 int main()
 {
-    std::vector<User> storage;
     int option;
     while (true)
     {
-        int option;
         std::cout << "(1) Login" << '\n'
                   << "(2) Register" << '\n'
                   << "(3) Exit" << std::endl;
@@ -41,14 +44,13 @@ int main()
         std::system("clear");
         if (option == 2)
         {
-            User user;
             std::string login, psswrd;
             std::cout << "Enter username: ";
             std::getline(std::cin, login);
             std::cout << "Enter password: ";
             std::getline(std::cin, psswrd);
-            user.registration(&user, login, psswrd);
-            storage.push_back(user);
+            User user;
+            user.registration(login, psswrd);
             std::system("clear");
         }
         else if (option == 1)
@@ -66,8 +68,7 @@ int main()
                 std::getline(std::cin, login);
                 std::cout << "Enter password: ";
                 std::getline(std::cin, psswrd);
-                User user;
-                if (user.verify(storage, login, psswrd) == true)
+                if (User::verify(login, psswrd))
                 {
                     std::system("clear");
                     std::cout << "You are now logged" << std::endl;
