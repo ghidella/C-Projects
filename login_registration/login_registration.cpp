@@ -4,26 +4,27 @@
 
 class User
 {
-public:
+private:
     std::string login;
     std::string psswrd;
-};
 
-void registration(User *user, std::string login, std::string psswrd)
-{
-    user->login = login;
-    user->psswrd = psswrd;
-}
-
-bool verify(std::vector<User> storage, std::string login, std::string psswrd)
-{
-    for (int i = 0; i < storage.size(); i++)
+public:
+    void registration(User *user, std::string login, std::string psswrd)
     {
-        if (storage[i].login == login && storage[i].psswrd == psswrd)
-            return true;
+        user->login = login;
+        user->psswrd = psswrd;
     }
-    return false;
-}
+
+    bool verify(std::vector<User> storage, std::string login, std::string psswrd)
+    {
+        for (int i = 0; i < storage.size(); i++)
+        {
+            if (storage[i].login == login && storage[i].psswrd == psswrd)
+                return true;
+        }
+        return false;
+    }
+};
 
 int main()
 {
@@ -46,7 +47,7 @@ int main()
             std::getline(std::cin, login);
             std::cout << "Enter password: ";
             std::getline(std::cin, psswrd);
-            registration(&user, login, psswrd);
+            user.registration(&user, login, psswrd);
             storage.push_back(user);
             std::system("clear");
         }
@@ -65,14 +66,16 @@ int main()
                 std::getline(std::cin, login);
                 std::cout << "Enter password: ";
                 std::getline(std::cin, psswrd);
-                if (verify(storage, login, psswrd) == true)
+                User user;
+                if (user.verify(storage, login, psswrd) == true)
                 {
                     std::system("clear");
                     std::cout << "You are now logged" << std::endl;
                     int option2;
                     std::cout << "(1)Logout" << std::endl;
                     std::cin >> option2;
-                    if (option2 == 1){
+                    if (option2 == 1)
+                    {
                         std::system("clear");
                         break;
                     }
