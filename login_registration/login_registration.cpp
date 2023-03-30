@@ -42,6 +42,14 @@ public:
     {
         return storage.size();
     }
+
+    static void listUsers()
+    {
+        for (int i = 0; i < storage.size(); i++)
+        {
+            std::cout << storage[i].login << std::endl;
+        }
+    }
 };
 
 std::vector<User> User::storage; // Definition of static storage
@@ -54,6 +62,7 @@ int main()
         std::cout << "(1) Login" << '\n'
                   << "(2) Register" << '\n'
                   << "(3) Exit" << '\n'
+                  << "(4) List Users" << '\n'
                   << "User count: " << User::usersNum() << std::endl;
         std::cin >> option;
         std::cin.ignore();
@@ -133,6 +142,23 @@ int main()
         else if (option == 3)
         {
             break;
+        }
+        else if (option == 4)
+        {
+            int i{0};
+            while (true)
+            {
+                std::system("clear");
+                if (i > 0)
+                    std::cout << "You can only exit :)" << std::endl;
+                User::listUsers();
+                int exit;
+                std::cout << "(0) Exit" << std::endl;
+                std::cin >> exit;
+                if (exit == 0)
+                    break;
+                i++;
+            }
         }
         else
         {
