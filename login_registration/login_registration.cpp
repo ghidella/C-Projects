@@ -2,6 +2,13 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <cstdlib> // For std::system()
+
+#if defined(_WIN32) || defined(_WIN64) // For Windows
+    #define CLEAR "cls"
+#else // For Linux and others
+    #define CLEAR "clear"
+#endif
 
 class User
 {
@@ -66,7 +73,7 @@ int main()
                   << "User count: " << User::usersNum() << std::endl;
         std::cin >> option;
         std::cin.ignore();
-        std::system("clear");
+        std::system(CLEAR);
         if (option == 2)
         {
             User user;
@@ -86,7 +93,7 @@ int main()
             std::cout << "Enter password: ";
             std::getline(std::cin, psswrd);
             user.registration(login, psswrd);
-            std::system("clear");
+            std::system(CLEAR);
         }
         else if (option == 1)
         {
@@ -122,19 +129,19 @@ int main()
                 }
                 if (User::verify(login, psswrd))
                 {
-                    std::system("clear");
+                    std::system(CLEAR);
                     std::cout << "You are now logged" << std::endl;
                     int option2;
                     std::cout << "(1)Logout" << std::endl;
                     std::cin >> option2;
                     if (option2 == 1)
                     {
-                        std::system("clear");
+                        std::system(CLEAR);
                         break;
                     }
                     std::cout << "Invalid option, please try again!" << std::endl;
                 }
-                std::system("clear");
+                std::system(CLEAR);
                 std::cout << "Username or password incorrect, please try again!" << std::endl;
                 i++;
             }
@@ -148,7 +155,7 @@ int main()
             int i{0};
             while (true)
             {
-                std::system("clear");
+                std::system(CLEAR);
                 if (i > 0)
                     std::cout << "You can only exit :)" << std::endl;
                 User::listUsers();
@@ -159,6 +166,7 @@ int main()
                     break;
                 i++;
             }
+            std::system(CLEAR);
         }
         else
         {
