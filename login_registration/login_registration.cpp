@@ -11,6 +11,16 @@ private:
     static std::vector<User> storage;
 
 public:
+    static bool verifyLogin(std::string login)
+    {
+        for (int i = 0; i < storage.size(); i++)
+        {
+            if (storage[i].login == login)
+                return true;
+        }
+        return false;
+    }
+
     void registration(std::string login, std::string psswrd)
     {
         this->login = login;
@@ -50,12 +60,22 @@ int main()
         std::system("clear");
         if (option == 2)
         {
+            User user;
             std::string login, psswrd;
-            std::cout << "Enter username: ";
-            std::getline(std::cin, login);
+            while (true)
+            {
+                std::cout << "Enter username: ";
+                std::getline(std::cin, login);
+                if (user.verifyLogin(login) == true)
+                {
+                    std::cout << "Username already exists, please choose another one !" << std::endl;
+                    continue;
+                }
+                else
+                    break;
+            }
             std::cout << "Enter password: ";
             std::getline(std::cin, psswrd);
-            User user;
             user.registration(login, psswrd);
             std::system("clear");
         }
