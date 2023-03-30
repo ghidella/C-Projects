@@ -1,5 +1,6 @@
-Personal projects for c++ study
+# Personal projects for C++ study
 
+## Linux
 In linux, compile with:
 ```bash
 g++ -o program login_registration.cpp
@@ -9,6 +10,7 @@ And run using:
 ./program
 ```
 
+## Windows
 In windows, compile with:
 ```bash
 g++ login_registration.cpp -o program.exe
