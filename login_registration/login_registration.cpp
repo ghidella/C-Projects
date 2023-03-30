@@ -27,6 +27,11 @@ public:
         }
         return false;
     }
+
+    static int usersNum()
+    {
+        return storage.size();
+    }
 };
 
 std::vector<User> User::storage; // Definition of static storage
@@ -38,7 +43,8 @@ int main()
     {
         std::cout << "(1) Login" << '\n'
                   << "(2) Register" << '\n'
-                  << "(3) Exit" << std::endl;
+                  << "(3) Exit" << '\n'
+                  << "User count: " << User::usersNum() << std::endl;
         std::cin >> option;
         std::cin.ignore();
         std::system("clear");
