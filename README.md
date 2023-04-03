@@ -1,7 +1,11 @@
-# Personal projects for C++ study
+# Login Registration
 
-##[Login and Register](https://github.com/ghidella/cpp-projects/tree/main/login_registration)
-Simple login and register program with little features.
+This folder contains code for a simple login/registration system. 
 
-##[Insertion Sort SFML](https://github.com/ghidella/cpp-projects/tree/main/insertion_sort)
+## Instructions
+
+See [instructions.md](./instructions.md) for information on how to use this code.
+
+
+# [Insertion Sort SFML](https://github.com/ghidella/cpp-projects/tree/main/insertion_sort)
 Basic animation of the insertion sort algorithm
