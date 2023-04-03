@@ -18,6 +18,7 @@ private:
     static std::vector<User> storage;
 
 public:
+    // check if the input exist in the database
     static bool verifyLogin(std::string login)
     {
         for (int i = 0; i < storage.size(); i++)
@@ -28,6 +29,7 @@ public:
         return false;
     }
 
+    // adds new user to the database
     void registration(std::string login, std::string psswrd)
     {
         this->login = login;
@@ -35,6 +37,7 @@ public:
         storage.push_back(*this);
     }
 
+    // check information to login
     static bool verify(std::string login, std::string psswrd)
     {
         for (int i = 0; i < storage.size(); i++)
@@ -45,11 +48,13 @@ public:
         return false;
     }
 
+    // simple users count
     static int usersNum()
     {
         return storage.size();
     }
 
+    // list the users login
     static void listUsers()
     {
         for (int i = 0; i < storage.size(); i++)
@@ -66,9 +71,6 @@ int main()
     int option;
     while (true)
     {
-        std::cout << "********************" << '\n'
-                  << "***** C++ BANK *****" << '\n'
-                  << "********************\n" << std::endl;
         std::cout << "(1) Login" << '\n'
                   << "(2) Register" << '\n'
                   << "(3) Exit" << '\n'
