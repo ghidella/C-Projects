@@ -17,7 +17,7 @@ int main()
         arr[i] = std::rand() % 1000;
     }
 
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Sorting Algorithms");
+    sf::RenderWindow window(sf::VideoMode(800, 600), "Insertion Sort");
 
     // create rectangles
     sf::RectangleShape rectangle(sf::Vector2f(800.0f / SIZE, 0.0f));
