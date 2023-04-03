@@ -5,9 +5,9 @@
 #include <cstdlib> // For std::system()
 
 #if defined(_WIN32) || defined(_WIN64) // For Windows
-    #define CLEAR "cls"
+#define CLEAR "cls"
 #else // For Linux and others
-    #define CLEAR "clear"
+#define CLEAR "clear"
 #endif
 
 class User
@@ -66,6 +66,9 @@ int main()
     int option;
     while (true)
     {
+        std::cout << "********************" << '\n'
+                  << "***** C++ BANK *****" << '\n'
+                  << "********************\n" << std::endl;
         std::cout << "(1) Login" << '\n'
                   << "(2) Register" << '\n'
                   << "(3) Exit" << '\n'
