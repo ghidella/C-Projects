@@ -17,7 +17,7 @@ private:
     std::string psswrd;
     static std::vector<User> storage;
 
-// public functions
+    // public functions
 public:
     // check if the input exist in the database
     static bool verifyLogin(std::string login)
@@ -37,6 +37,8 @@ public:
         this->psswrd = psswrd;
         storage.push_back(*this);
     }
+
+    // remove an user from the database
 
     // check information to login
     static bool verify(std::string login, std::string psswrd)
@@ -78,7 +80,7 @@ void menu()
 }
 int main()
 {
-    int option; // user's choice
+    int option;            // user's choice
     bool main_loop = true; // loop controller
     while (main_loop)
     {
@@ -92,7 +94,8 @@ int main()
         case 1:
         {
             int i = 0;
-            while (true)
+            bool logout = true;
+            while (logout)
             {
                 std::string login, psswrd;
                 if (i == 3)
@@ -121,23 +124,30 @@ int main()
                     std::cout << "Invalid password, please try again!" << std::endl;
                     continue;
                 }
-                if (User::verify(login, psswrd))
+                if (User::verify(login, psswrd)) // successfully logged in
                 {
-                    std::system(CLEAR);
-                    std::cout << "You are now logged" << std::endl;
-                    int option2;
-                    std::cout << "(1)Logout" << std::endl;
-                    std::cin >> option2;
-                    if (option2 == 1)
+                    while (true)
                     {
                         std::system(CLEAR);
-                        break;
+                        std::cout << "You are now logged" << std::endl;
+                        int option2;
+                        std::cout << "(1)Logout" << std::endl;
+                        std::cin >> option2;
+                        if (option2 == 1)
+                        {
+                            // std::system(CLEAR);
+                            logout = false;
+                            break;
+                        }
+                        std::cout << "Invalid option, please try again!" << std::endl;
                     }
-                    std::cout << "Invalid option, please try again!" << std::endl;
                 }
-                std::system(CLEAR);
-                std::cout << "Username or password incorrect, please try again!" << std::endl;
-                i++;
+                else
+                {
+                    std::system(CLEAR);
+                    std::cout << "Username or password incorrect, please try again!" << std::endl;
+                    i++;
+                }
             }
             break;
         }
@@ -149,7 +159,7 @@ int main()
             {
                 std::cout << "Enter username: ";
                 std::getline(std::cin, login);
-                if (user.verifyLogin(login) == true)
+                if (User::verifyLogin(login) == true)
                 {
                     std::cout << "Username already exists, please choose another one !" << std::endl;
                     continue;
