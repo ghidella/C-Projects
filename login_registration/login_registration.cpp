@@ -17,6 +17,7 @@ private:
     std::string psswrd;
     static std::vector<User> storage;
 
+// public functions
 public:
     // check if the input exist in the database
     static bool verifyLogin(std::string login)
@@ -66,41 +67,29 @@ public:
 
 std::vector<User> User::storage; // Definition of static storage
 
+// Display the menu
+void menu()
+{
+    std::cout << "(1) Login" << '\n'
+              << "(2) Register" << '\n'
+              << "(3) Exit" << '\n'
+              << "(4) List Users" << '\n'
+              << "User count: " << User::usersNum() << std::endl;
+}
 int main()
 {
-    int option;
-    while (true)
+    int option; // user's choice
+    bool main_loop = true; // loop controller
+    while (main_loop)
     {
-        std::cout << "(1) Login" << '\n'
-                  << "(2) Register" << '\n'
-                  << "(3) Exit" << '\n'
-                  << "(4) List Users" << '\n'
-                  << "User count: " << User::usersNum() << std::endl;
+        menu();
         std::cin >> option;
         std::cin.ignore();
         std::system(CLEAR);
-        if (option == 2)
+
+        switch (option)
         {
-            User user;
-            std::string login, psswrd;
-            while (true)
-            {
-                std::cout << "Enter username: ";
-                std::getline(std::cin, login);
-                if (user.verifyLogin(login) == true)
-                {
-                    std::cout << "Username already exists, please choose another one !" << std::endl;
-                    continue;
-                }
-                else
-                    break;
-            }
-            std::cout << "Enter password: ";
-            std::getline(std::cin, psswrd);
-            user.registration(login, psswrd);
-            std::system(CLEAR);
-        }
-        else if (option == 1)
+        case 1:
         {
             int i = 0;
             while (true)
@@ -150,12 +139,35 @@ int main()
                 std::cout << "Username or password incorrect, please try again!" << std::endl;
                 i++;
             }
-        }
-        else if (option == 3)
-        {
             break;
         }
-        else if (option == 4)
+        case 2:
+        {
+            User user;
+            std::string login, psswrd;
+            while (true)
+            {
+                std::cout << "Enter username: ";
+                std::getline(std::cin, login);
+                if (user.verifyLogin(login) == true)
+                {
+                    std::cout << "Username already exists, please choose another one !" << std::endl;
+                    continue;
+                }
+                else
+                    break;
+            }
+            std::cout << "Enter password: ";
+            std::getline(std::cin, psswrd);
+            user.registration(login, psswrd);
+            std::system(CLEAR);
+            break;
+        }
+        case 3:
+            main_loop = false;
+            break;
+
+        case 4:
         {
             int i{0};
             while (true)
@@ -172,10 +184,11 @@ int main()
                 i++;
             }
             std::system(CLEAR);
+            break;
         }
-        else
-        {
+        default:
             std::cout << "Invalid option, please try again !" << std::endl;
+            break;
         }
     }
 
