@@ -39,6 +39,17 @@ public:
     }
 
     // remove an user from the database
+    static void removeUser(std::string username)
+    {
+        for (int i = 0; i < storage.size(); i++)
+        {
+            if (storage[i].login == username)
+            {
+                storage.erase(storage.begin() + i);
+                return;
+            }
+        }
+    }
 
     // check information to login
     static bool verify(std::string login, std::string psswrd)
@@ -126,20 +137,36 @@ int main()
                 }
                 if (User::verify(login, psswrd)) // successfully logged in
                 {
-                    while (true)
+                    bool logged = true; 
+                    while (logged)
                     {
-                        std::system(CLEAR);
+
                         std::cout << "You are now logged" << std::endl;
                         int option2;
-                        std::cout << "(1)Logout" << std::endl;
+                        std::cout << "(1) Logout" << '\n'
+                                  << "(2) Delete account" << std::endl;
                         std::cin >> option2;
-                        if (option2 == 1)
+                        switch (option2)
                         {
-                            // std::system(CLEAR);
-                            logout = false;
+                        case 1:
+                        {
+                            std::system(CLEAR);
+                            logout = false, logged = false;
                             break;
                         }
-                        std::cout << "Invalid option, please try again!" << std::endl;
+                        case 2:
+                        {
+                            User::removeUser(login);
+                            logout = false, logged = false;
+                            break;
+                        }
+                        default:
+                        {
+                            std::cout << "Invalid option, please try again!" << std::endl;
+                            std::system(CLEAR);
+                            break;
+                        }
+                        }
                     }
                 }
                 else
@@ -170,7 +197,6 @@ int main()
             std::cout << "Enter password: ";
             std::getline(std::cin, psswrd);
             user.registration(login, psswrd);
-            std::system(CLEAR);
             break;
         }
         case 3:
@@ -193,13 +219,13 @@ int main()
                     break;
                 i++;
             }
-            std::system(CLEAR);
             break;
         }
         default:
             std::cout << "Invalid option, please try again !" << std::endl;
             break;
         }
+        std::system(CLEAR);
     }
 
     return 0;
