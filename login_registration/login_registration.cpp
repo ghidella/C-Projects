@@ -15,6 +15,7 @@ class User
 private:
     std::string login;
     std::string psswrd;
+    float bank;
     static std::vector<User> storage;
 
     // public functions
@@ -35,6 +36,7 @@ public:
     {
         this->login = login;
         this->psswrd = psswrd;
+        this->bank = 5000;
         storage.push_back(*this);
     }
 
@@ -52,12 +54,15 @@ public:
     }
 
     // check information to login
-    static bool verify(std::string login, std::string psswrd)
+    static bool verify(std::string login, std::string psswrd, User*& user)
     {
         for (int i = 0; i < storage.size(); i++)
         {
             if (storage[i].login == login && storage[i].psswrd == psswrd)
+            {
+                user = &storage[i];
                 return true;
+            }
         }
         return false;
     }
@@ -75,6 +80,11 @@ public:
         {
             std::cout << storage[i].login << std::endl;
         }
+    }
+
+    static float cash(User *user)
+    {
+        return user->bank;
     }
 };
 
@@ -135,15 +145,18 @@ int main()
                     std::cout << "Invalid password, please try again!" << std::endl;
                     continue;
                 }
-                if (User::verify(login, psswrd)) // successfully logged in
+                User *user = nullptr;
+                if (User::verify(login, psswrd, user)) // successfully logged in
                 {
-                    bool logged = true; 
+                    bool logged = true;
                     while (logged)
                     {
-
-                        std::cout << "You are now logged" << std::endl;
+                        std::system(CLEAR);
+                        float user_cash = User::cash(user);
+                        std::cout << "Welcome " << login << "!\n\n";
                         int option2;
-                        std::cout << "(1) Logout" << '\n'
+                        std::cout << "     $ " << user_cash << "\n\n"
+                                  << "(1) Logout" << '\n'
                                   << "(2) Delete account" << std::endl;
                         std::cin >> option2;
                         switch (option2)
