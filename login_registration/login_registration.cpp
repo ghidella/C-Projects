@@ -144,6 +144,7 @@ public:
     {
         return user->number;
     }
+
     // withdraw
     static bool withdraw(User *user, float ammount)
     {
@@ -154,6 +155,25 @@ public:
         }
         else
             return false;
+    }
+
+    // transfer
+    static bool transfer(User *user, float ammount, int number)
+    {
+        User *aux = nullptr;
+        for (int i = 0; i < storage.size(); i++)
+        {
+            if (storage[i].number == number)
+            {
+                aux = &storage[i];
+                break;
+            }
+        }
+        if (aux == nullptr || user->money < ammount)
+            return false;
+        user->money -= ammount;
+        aux->money += ammount;
+        return true;
     }
 };
 
@@ -229,7 +249,8 @@ int main()
                                   << "(1) Logout" << '\n'
                                   << "(2) Change password" << '\n'
                                   << "(3) Withdraw" << '\n'
-                                  << "(4) Delete account" << std::endl;
+                                  << "(4) Transfer" << '\n'
+                                  << "(5) Delete account" << std::endl;
                         std::cin >> option2;
                         switch (option2)
                         {
@@ -273,6 +294,32 @@ int main()
                             break;
                         }
                         case 4:
+                        {
+
+                            for (int i = 0; i < 3; i++)
+                            {
+                                clear();
+                                std::cout << "Enter the ammount you want to transfer: ";
+                                float ammount;
+                                std::cin >> ammount;
+                                std::cout << "Account number for transfer: ";
+                                float account_number;
+                                std::cin >> account_number;
+                                if (User::transfer(user, ammount, account_number))
+                                {
+                                    std::cout << "Successfully transfered $" << ammount;
+                                    delay(3000);
+                                    break;
+                                }
+
+                                std::cout << "Account doesn't exist or you don't have the money, please try again!" << std::endl;
+                                delay(2000);
+                            }
+                            std::cout << "You failed 3 times, try again later!";
+                            delay(3000);
+                            break;
+                        }
+                        case 5:
                         {
                             User::removeUser(login);
                             logout = false, logged = false;
