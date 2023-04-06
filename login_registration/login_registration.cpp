@@ -307,7 +307,7 @@ int main()
                                 std::cin >> account_number;
                                 if (User::transfer(user, ammount, account_number))
                                 {
-                                    std::cout << "Successfully transfered $" << ammount;
+                                    std::cout << "Successfully transferred $" << ammount;
                                     delay(3000);
                                     break;
                                 }
