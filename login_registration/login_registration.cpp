@@ -1,9 +1,11 @@
 #include <iostream>
 #include <string>
-#include <vector>
-#include <algorithm>
-#include <cstdlib> // For std::system()
+#include <vector>    // data base
+#include <algorithm> // for input validation
+#include <cstdlib>   // For std::system()
+#include <random>    // create account number
 
+// verify OS (multi platform feature)
 #ifdef _WIN32
 #include <windows.h>
 #define CLEAR "cls"
@@ -12,6 +14,7 @@
 #define CLEAR "clear"
 #endif
 
+// set the variables from OS
 void clear()
 {
     system(CLEAR);
@@ -29,8 +32,10 @@ void delay(int milliseconds)
 class User
 {
 private:
+    // user variables
     std::string login;
     std::string psswrd;
+    int number;
     float money;
     static std::vector<User> storage;
 
@@ -47,12 +52,32 @@ public:
         return false;
     }
 
+    int generateNumber()
+    {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> dis(10000, 99999);
+        while (true)
+        {
+            int num = dis(gen);
+            int i;
+            for (i = 0; i < storage.size(); i++)
+            {
+                if (storage[i].number == num)
+                    break;
+            }
+            if (i == storage.size())
+                return num;
+        }
+    }
+
     // adds new user to the database
     void registration(std::string login, std::string psswrd)
     {
         this->login = login;
         this->psswrd = psswrd;
         this->money = 5000;
+        this->number = generateNumber();
         storage.push_back(*this);
     }
 
@@ -104,12 +129,21 @@ public:
         }
     }
 
-    // return users cash
+    /*
+        BANK FUNCTIONS
+    */
+
+    // return user's cash
     static float cash(User *user)
     {
         return user->money;
     }
 
+    // return user's account number
+    static int getNumber(User *user)
+    {
+        return user->number;
+    }
     // withdraw
     static bool withdraw(User *user, float ammount)
     {
@@ -189,7 +223,7 @@ int main()
                     {
                         clear();
                         float user_cash = User::cash(user);
-                        std::cout << "Welcome " << login << "!\n\n";
+                        std::cout << "Welcome " << login << "!\nAccount number: " << User::getNumber(user) << "\n\n";
                         int option2;
                         std::cout << "     $ " << user_cash << "\n\n"
                                   << "(1) Logout" << '\n'
@@ -212,6 +246,8 @@ int main()
                             std::cin >> new_psswrd;
                             user->changePssword(new_psswrd);
                             std::cout << "Successfully changed !";
+                            delay(3000);
+                            clear();
                             break;
                         }
                         case 3:
