@@ -315,8 +315,12 @@ int main()
                                 std::cout << "Account doesn't exist or you don't have the money, please try again!" << std::endl;
                                 delay(2000);
                             }
-                            std::cout << "You failed 3 times, try again later!";
-                            delay(3000);
+                            if (i == 3)
+                            {
+                                std::cout << "You failed 3 times, try again later!";
+                                delay(3000);
+                            }
+
                             break;
                         }
                         case 5:
