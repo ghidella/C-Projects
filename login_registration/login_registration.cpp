@@ -4,18 +4,34 @@
 #include <algorithm>
 #include <cstdlib> // For std::system()
 
-#if defined(_WIN32) || defined(_WIN64) // For Windows
+#ifdef _WIN32
+#include <windows.h>
 #define CLEAR "cls"
-#else // For Linux and others
+#else
+#include <unistd.h>
 #define CLEAR "clear"
 #endif
+
+void clear()
+{
+    system(CLEAR);
+}
+
+void delay(int milliseconds)
+{
+#ifdef _WIN32
+    Sleep(milliseconds);
+#else
+    usleep(milliseconds * 1000);
+#endif
+}
 
 class User
 {
 private:
     std::string login;
     std::string psswrd;
-    float bank;
+    float money;
     static std::vector<User> storage;
 
     // public functions
@@ -36,7 +52,7 @@ public:
     {
         this->login = login;
         this->psswrd = psswrd;
-        this->bank = 5000;
+        this->money = 5000;
         storage.push_back(*this);
     }
 
@@ -54,7 +70,7 @@ public:
     }
 
     // check information to login
-    static bool verify(std::string login, std::string psswrd, User*& user)
+    static bool verify(std::string login, std::string psswrd, User *&user)
     {
         for (int i = 0; i < storage.size(); i++)
         {
@@ -82,9 +98,22 @@ public:
         }
     }
 
+    // return users cash
     static float cash(User *user)
     {
-        return user->bank;
+        return user->money;
+    }
+
+    // withdraw
+    static bool withdraw(User *user, float ammount)
+    {
+        if (user->money >= ammount)
+        {
+            user->money -= ammount;
+            return true;
+        }
+        else
+            return false;
     }
 };
 
@@ -108,7 +137,7 @@ int main()
         menu();
         std::cin >> option;
         std::cin.ignore();
-        std::system(CLEAR);
+        clear();
 
         switch (option)
         {
@@ -122,6 +151,7 @@ int main()
                 if (i == 3)
                 {
                     std::cout << "You failed 3 times, try again later! " << std::endl;
+                    delay(3000);
                     break;
                 }
                 std::cout << "Enter username: ";
@@ -151,23 +181,46 @@ int main()
                     bool logged = true;
                     while (logged)
                     {
-                        std::system(CLEAR);
+                        clear();
                         float user_cash = User::cash(user);
                         std::cout << "Welcome " << login << "!\n\n";
                         int option2;
                         std::cout << "     $ " << user_cash << "\n\n"
                                   << "(1) Logout" << '\n'
-                                  << "(2) Delete account" << std::endl;
+                                  << "(2) Withdraw" << '\n'
+                                  << "(3) Delete account" << std::endl;
                         std::cin >> option2;
                         switch (option2)
                         {
                         case 1:
                         {
-                            std::system(CLEAR);
+                            clear();
                             logout = false, logged = false;
                             break;
                         }
                         case 2:
+                        {
+                            clear();
+                            while (true)
+                            {
+                                
+                                std::cout << "Current: $" << user_cash << "\nAmmount: ";
+                                float ammount;
+                                std::cin >> ammount;
+                                if (User::withdraw(user, ammount))
+                                {
+                                    std::cout << "Successfully withdrawed $" << ammount << std::endl;
+                                    delay(3000);
+                                    break;
+                                }
+                                else
+                                {
+                                    std::cout << "Insufficient funds!" << std::endl;
+                                }
+                            }
+                            break;
+                        }
+                        case 3:
                         {
                             User::removeUser(login);
                             logout = false, logged = false;
@@ -176,7 +229,7 @@ int main()
                         default:
                         {
                             std::cout << "Invalid option, please try again!" << std::endl;
-                            std::system(CLEAR);
+                            clear();
                             break;
                         }
                         }
@@ -184,7 +237,7 @@ int main()
                 }
                 else
                 {
-                    std::system(CLEAR);
+                    clear();
                     std::cout << "Username or password incorrect, please try again!" << std::endl;
                     i++;
                 }
@@ -221,7 +274,7 @@ int main()
             int i{0};
             while (true)
             {
-                std::system(CLEAR);
+                clear();
                 if (i > 0)
                     std::cout << "You can only exit :)" << std::endl;
                 User::listUsers();
@@ -238,7 +291,7 @@ int main()
             std::cout << "Invalid option, please try again !" << std::endl;
             break;
         }
-        std::system(CLEAR);
+        clear();
     }
 
     return 0;
