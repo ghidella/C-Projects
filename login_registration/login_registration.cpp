@@ -56,6 +56,12 @@ public:
         storage.push_back(*this);
     }
 
+    // change password
+    void changePssword(std::string new_psswrd)
+    {
+        this->psswrd = new_psswrd;
+    }
+
     // remove an user from the database
     static void removeUser(std::string username)
     {
@@ -187,8 +193,9 @@ int main()
                         int option2;
                         std::cout << "     $ " << user_cash << "\n\n"
                                   << "(1) Logout" << '\n'
-                                  << "(2) Withdraw" << '\n'
-                                  << "(3) Delete account" << std::endl;
+                                  << "(2) Change password" << '\n'
+                                  << "(3) Withdraw" << '\n'
+                                  << "(4) Delete account" << std::endl;
                         std::cin >> option2;
                         switch (option2)
                         {
@@ -200,10 +207,19 @@ int main()
                         }
                         case 2:
                         {
+                            std::cout << "New password: ";
+                            std::string new_psswrd;
+                            std::cin >> new_psswrd;
+                            user->changePssword(new_psswrd);
+                            std::cout << "Successfully changed !";
+                            break;
+                        }
+                        case 3:
+                        {
                             clear();
                             while (true)
                             {
-                                
+
                                 std::cout << "Current: $" << user_cash << "\nAmmount: ";
                                 float ammount;
                                 std::cin >> ammount;
@@ -220,7 +236,7 @@ int main()
                             }
                             break;
                         }
-                        case 3:
+                        case 4:
                         {
                             User::removeUser(login);
                             logout = false, logged = false;
